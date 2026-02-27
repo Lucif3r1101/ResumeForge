@@ -9,12 +9,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "models", "all-mpnet-base-v2")
-
-if not os.path.exists(MODEL_PATH):
-    os.makedirs(MODEL_PATH, exist_ok=True)
-    model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
-    model.save(MODEL_PATH)
-else:
 _model = None
 
 def get_model():
