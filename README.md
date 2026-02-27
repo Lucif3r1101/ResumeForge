@@ -26,6 +26,23 @@ npm install
 npm run dev
 ```
 
+## Deploy (Free)
+### Render (backend + ML)
+1. Go to Render → New → “Blueprint” and select your GitHub repo.
+2. Render will pick up `render.yaml` and create two services:
+   - `resumeforge-ml`
+   - `resumeforge-backend`
+3. After ML service is deployed, copy its URL into the backend service env:
+   - `ML_SERVICE_URL=https://<your-ml>.onrender.com`
+
+### Vercel (frontend)
+1. Vercel → New Project → import repo.
+2. Set **Root Directory** to `frontend/`.
+3. Build command: `npm run build` and Output: `dist`
+4. Add env:
+   - `VITE_API_BASE_URL=https://<your-backend>.onrender.com`
+   - Firebase vars from `.env`
+
 ## Environment
 Create `/Users/rishavraj/Proj/Track/resume-wow/frontend/.env`:
 ```
