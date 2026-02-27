@@ -156,6 +156,9 @@ export default function Home() {
         {result && !loading && (
           <>
             <ScoreSection score={result.score} subscores={result.subscores} />
+            <div className="mt-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-[var(--shadow)] text-center text-sm text-[var(--muted)]">
+              Ad slot (results) — add AdSense later
+            </div>
             <div className="mt-8 grid md:grid-cols-2 gap-4">
               <div className="bg-[var(--card)] p-4 rounded-2xl border border-[var(--border)] shadow-[var(--shadow)]">
                 <h4 className="font-semibold mb-2">Matched Keywords</h4>
@@ -171,6 +174,9 @@ export default function Home() {
               </div>
             </div>
             <Suggestions suggestions={result.suggestions || []} />
+            <div className="mt-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-[var(--shadow)] text-center text-sm text-[var(--muted)]">
+              Ad slot (footer) — add AdSense later
+            </div>
             <div className="mt-8 flex items-center gap-4">
               {!feedbackSent && (
                 <>
