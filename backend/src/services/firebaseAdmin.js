@@ -22,10 +22,8 @@ if (!admin.apps.length) {
   const serviceAccount = loadServiceAccount();
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   });
 }
 
 export const firestore = admin.firestore();
-export const storage = admin.storage();
 export const adminAuth = admin.auth();

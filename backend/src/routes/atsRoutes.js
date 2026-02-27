@@ -4,7 +4,7 @@ import path from "path";
 import crypto from "crypto";
 import { parseResumeBuffer } from "../services/resumeParser.js";
 import { analyzeWithAI } from "../services/aiService.js";
-import { firestore, storage } from "../services/firebaseAdmin.js";
+import { firestore } from "../services/firebaseAdmin.js";
 
 const router = express.Router();
 
@@ -65,23 +65,13 @@ router.post("/analyze", upload.single("resume"), async (req, res) => {
     const analysisId = crypto.randomUUID();
     const userId = req.headers["x-user-id"] || null;
 
-    let storagePath = null;
-    if (hasFile) {
-      const bucket = storage.bucket(process.env.FIREBASE_STORAGE_BUCKET);
-      storagePath = `uploads/${analysisId}-${originalName}`;
-      await bucket.file(storagePath).save(fileBuffer, {
-        contentType: req.file.mimetype,
-      });
-    }
-
     const doc = {
       id: analysisId,
       userId,
       createdAt: new Date().toISOString(),
       jobDescription,
       resumeText,
-      result: aiResult,
-      storagePath
+      result: aiResult
     };
     await firestore.collection("analyses").doc(analysisId).set(doc);
 
