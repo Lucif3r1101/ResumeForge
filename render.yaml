@@ -6,7 +6,6 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      python3 tools/download_model.py
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PORT

@@ -11,12 +11,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "models", "all-mpnet-base-v2")
 
 if not os.path.exists(MODEL_PATH):
-    raise RuntimeError(
-        f"Local model not found at {MODEL_PATH}. "
-        "Run tools/download_model.py to download and bundle the model."
-    )
-
-model = SentenceTransformer(MODEL_PATH)
+    os.makedirs(MODEL_PATH, exist_ok=True)
+    model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+    model.save(MODEL_PATH)
+else:
+    model = SentenceTransformer(MODEL_PATH)
 
 STOPWORDS = {
     "the","and","for","with","that","this","from","your","you","are","was","were","will","would",
