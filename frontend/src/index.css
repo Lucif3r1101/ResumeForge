@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f7f4ee;
+  --ink: #0f172a;
+  --muted: #5b5f66;
+  --card: #ffffff;
+  --border: #e7e2d9;
+  --accent: #0f766e;
+  --accent-2: #f97316;
+  --accent-3: #1d4ed8;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(15, 118, 110, 0.12), transparent 60%),
+              radial-gradient(900px 500px at 110% 10%, rgba(249, 115, 22, 0.12), transparent 60%),
+              var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+.bg-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
+  background-size: 48px 48px;
+}

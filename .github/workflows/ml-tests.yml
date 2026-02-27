@@ -1,0 +1,25 @@
+name: ml-service-tests
+
+on:
+  push:
+    paths:
+      - "ml_service/**"
+      - ".github/workflows/ml-tests.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          cd ml_service
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          cd ml_service
+          pytest

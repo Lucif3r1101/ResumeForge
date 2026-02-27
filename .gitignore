@@ -1,0 +1,54 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build folders
+dist/
+build/
+
+# Vite
+frontend/dist/
+
+# Backend uploads
+backend/uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# Mac
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo     
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ML artifacts
+ml_service/models/
+backend/data/
+
+# Local venv
+resume_wow/

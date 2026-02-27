@@ -1,0 +1,55 @@
+{
+  "role_keywords": {
+    "software": ["software", "backend", "frontend", "fullstack", "developer", "engineer", "api", "microservices"],
+    "data": ["data", "analytics", "analyst", "scientist", "ml", "ai", "machine learning", "deep learning"],
+    "product": ["product", "pm", "roadmap", "requirements", "stakeholder", "user research"],
+    "design": ["ux", "ui", "design", "visual", "prototype", "wireframe"],
+    "marketing": ["marketing", "growth", "seo", "content", "brand", "campaign"],
+    "sales": ["sales", "account", "business development", "pipeline", "crm", "quota"],
+    "finance": ["finance", "accounting", "fp&a", "audit", "budget", "forecast"],
+    "ops": ["operations", "supply", "logistics", "process", "compliance", "quality"]
+  },
+  "role_skills": {
+    "software": [
+      "python", "java", "javascript", "typescript", "node", "react", "sql", "docker", "kubernetes",
+      "aws", "gcp", "azure", "rest", "graphql", "microservices", "ci/cd", "git", "linux"
+    ],
+    "data": [
+      "python", "sql", "pandas", "numpy", "spark", "airflow", "dbt", "tableau", "powerbi",
+      "statistics", "machine learning", "etl", "data modeling", "data warehouse"
+    ],
+    "product": [
+      "roadmap", "user research", "analytics", "a/b testing", "stakeholders", "prd",
+      "backlog", "user stories", "kpi", "okrs"
+    ],
+    "design": [
+      "figma", "sketch", "adobe", "wireframe", "prototype", "usability", "design systems", "user research"
+    ],
+    "marketing": [
+      "seo", "sem", "content", "email", "paid ads", "analytics", "branding", "campaign", "social media"
+    ],
+    "sales": [
+      "crm", "pipeline", "prospecting", "negotiation", "quota", "forecasting", "account management"
+    ],
+    "finance": [
+      "financial modeling", "forecasting", "budgeting", "variance", "audit", "gaap", "excel"
+    ],
+    "ops": [
+      "process improvement", "sop", "compliance", "supply chain", "logistics", "quality", "inventory"
+    ]
+  },
+  "skill_synonyms": {
+    "js": "javascript",
+    "ts": "typescript",
+    "nodejs": "node",
+    "reactjs": "react",
+    "postgres": "postgresql",
+    "k8s": "kubernetes",
+    "ml": "machine learning",
+    "ai": "artificial intelligence",
+    "cv": "computer vision",
+    "nlp": "natural language processing",
+    "ci/cd": "ci/cd",
+    "gcp": "gcp"
+  }
+}

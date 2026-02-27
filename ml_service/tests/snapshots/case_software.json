@@ -1,0 +1,18 @@
+{
+  "id": "case_software",
+  "tolerance": 8.0,
+  "expected": {
+    "score": [55, 100],
+    "subscores": {
+      "semantic": [40, 100],
+      "keyword_coverage": [40, 100],
+      "role_skill_coverage": [30, 100],
+      "quantified_impact": [10, 100],
+      "sections": [40, 100],
+      "formatting": [20, 100],
+      "spelling": [50, 100],
+      "contact": [50, 100]
+    },
+    "role_detected": "software"
+  }
+}

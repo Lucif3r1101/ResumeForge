@@ -1,0 +1,5 @@
+{
+  "id": "case_software",
+  "resume": "John Doe\\njohn@example.com | +1 (555) 555-5555\\nSummary: Software engineer with experience in Python, Node, and AWS.\\nExperience:\\n- Built REST APIs in Python and deployed on AWS.\\n- Improved latency by 25% using caching.\\nSkills: Python, JavaScript, Node, AWS, Docker, Kubernetes\\nEducation: B.S. Computer Science",
+  "job_description": "We are hiring a backend engineer. Requirements: Python, REST APIs, AWS, Docker. Responsibilities include building microservices and improving performance."
+}

@@ -1,0 +1,23 @@
+{
+  "weights": {
+    "semantic": 0.30,
+    "keyword_coverage": 0.25,
+    "role_skill_coverage": 0.15,
+    "quantified_impact": 0.10,
+    "sections": 0.10,
+    "formatting": 0.05,
+    "spelling": 0.03,
+    "contact": 0.02
+  },
+  "thresholds": {
+    "min_resume_chars": 50,
+    "min_jd_chars": 10,
+    "misspell_zipf_min": 2.5,
+    "misspell_penalty_mult": 2.0,
+    "word_count_min": 200,
+    "word_count_max": 1200,
+    "bullet_ratio_good": 0.20,
+    "bullet_ratio_ok": 0.10,
+    "table_line_ratio_penalty": 0.15
+  }
+}
