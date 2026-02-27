@@ -6,10 +6,12 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000 --log-level debug
     envVars:
       - key: PORT
         value: 10000
+      - key: PYTHONUNBUFFERED
+        value: "1"
 
   - type: web
     name: resumeforge-backend

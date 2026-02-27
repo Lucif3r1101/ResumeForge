@@ -6,3 +6,4 @@ numpy
 rapidfuzz
 wordfreq
 pytest
+torch
