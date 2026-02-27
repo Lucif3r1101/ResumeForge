@@ -15,7 +15,19 @@ if not os.path.exists(MODEL_PATH):
     model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
     model.save(MODEL_PATH)
 else:
-    model = SentenceTransformer(MODEL_PATH)
+_model = None
+
+def get_model():
+    global _model
+    if _model is not None:
+        return _model
+    if not os.path.exists(MODEL_PATH):
+        os.makedirs(MODEL_PATH, exist_ok=True)
+        _model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+        _model.save(MODEL_PATH)
+    else:
+        _model = SentenceTransformer(MODEL_PATH)
+    return _model
 
 STOPWORDS = {
     "the","and","for","with","that","this","from","your","you","are","was","were","will","would",
@@ -124,6 +136,7 @@ def correct_text(text, candidates):
     return " ".join(corrected)
 
 def semantic_score(resume, jd):
+    model = get_model()
     resume_emb = model.encode([resume])
     jd_emb = model.encode([jd])
     score = cosine_similarity(resume_emb, jd_emb)[0][0]
