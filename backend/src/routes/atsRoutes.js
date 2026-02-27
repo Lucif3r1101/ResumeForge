@@ -1,22 +1,14 @@
 import express from "express";
 import multer from "multer";
-import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { parseResume } from "../services/resumeParser.js";
+import { parseResumeBuffer } from "../services/resumeParser.js";
 import { analyzeWithAI } from "../services/aiService.js";
+import { firestore, storage } from "../services/firebaseAdmin.js";
 
 const router = express.Router();
 
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+const storageEngine = multer.memoryStorage();
 
 const allowedExt = new Set([".pdf", ".docx", ".txt"]);
 const allowedMime = new Set([
@@ -26,7 +18,7 @@ const allowedMime = new Set([
 ]);
 
 const upload = multer({
-  storage,
+  storage: storageEngine,
   limits: {
     fileSize: 10 * 1024 * 1024,
   },
@@ -51,18 +43,18 @@ router.post("/analyze", upload.single("resume"), async (req, res) => {
       return res.status(400).json({ error: "No resume provided" });
     }
 
-    const filePath = req.file?.path;
+    const fileBuffer = req.file?.buffer;
+    const originalName = req.file?.originalname;
     const { jobDescription } = req.body;
 
     if (!jobDescription || jobDescription.trim().length < 10) {
-      if (filePath) {
-        fs.unlinkSync(filePath);
-      }
       return res.status(400).json({ error: "Invalid job description" });
     }
 
     console.log("Parsing resume...");
-    const resumeText = hasFile ? await parseResume(filePath) : resumeTextInput;
+    const resumeText = hasFile
+      ? await parseResumeBuffer(fileBuffer, originalName)
+      : resumeTextInput;
 
     console.log("Calling OpenRouter AI...");
     const aiResult = await analyzeWithAI(
@@ -72,27 +64,26 @@ router.post("/analyze", upload.single("resume"), async (req, res) => {
 
     const analysisId = crypto.randomUUID();
     const userId = req.headers["x-user-id"] || null;
-    const dataDir = path.join(process.cwd(), "data");
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+
+    let storagePath = null;
+    if (hasFile) {
+      const bucket = storage.bucket(process.env.FIREBASE_STORAGE_BUCKET);
+      storagePath = `uploads/${analysisId}-${originalName}`;
+      await bucket.file(storagePath).save(fileBuffer, {
+        contentType: req.file.mimetype,
+      });
     }
-    const logEntry = {
+
+    const doc = {
       id: analysisId,
       userId,
       createdAt: new Date().toISOString(),
       jobDescription,
       resumeText,
-      result: aiResult
+      result: aiResult,
+      storagePath
     };
-    fs.appendFileSync(
-      path.join(dataDir, "analyses.jsonl"),
-      JSON.stringify(logEntry) + "\n"
-    );
-
-    // Delete uploaded file after processing
-    if (filePath) {
-      fs.unlinkSync(filePath);
-    }
+    await firestore.collection("analyses").doc(analysisId).set(doc);
 
     console.log("Response sent");
 
@@ -121,10 +112,6 @@ router.post("/feedback", async (req, res) => {
       return res.status(400).json({ error: "Missing analysisId" });
     }
     const userId = req.headers["x-user-id"] || null;
-    const dataDir = path.join(process.cwd(), "data");
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
     const feedback = {
       analysisId,
       userId,
@@ -133,10 +120,7 @@ router.post("/feedback", async (req, res) => {
       comment: comment || "",
       createdAt: new Date().toISOString()
     };
-    fs.appendFileSync(
-      path.join(dataDir, "feedback.jsonl"),
-      JSON.stringify(feedback) + "\n"
-    );
+    await firestore.collection("feedback").add(feedback);
     res.json({ ok: true });
   } catch (error) {
     console.error("Feedback ERROR:", error);
@@ -151,30 +135,21 @@ router.get("/history", async (req, res) => {
     if (!userId) {
       return res.status(400).json({ error: "Missing user id" });
     }
-    const dataDir = path.join(process.cwd(), "data");
-    const filePath = path.join(dataDir, "analyses.jsonl");
-    if (!fs.existsSync(filePath)) {
-      return res.json({ items: [] });
-    }
-    const lines = fs.readFileSync(filePath, "utf8").trim().split("\n");
-    const items = [];
-    for (let i = lines.length - 1; i >= 0 && items.length < 10; i--) {
-      const line = lines[i].trim();
-      if (!line) continue;
-      try {
-        const obj = JSON.parse(line);
-        if (obj.userId === userId) {
-          items.push({
-            id: obj.id,
-            createdAt: obj.createdAt,
-            score: obj.result?.score ?? null,
-            role: obj.result?.subscores?.role_detected ?? null
-          });
-        }
-      } catch {
-        // ignore malformed lines
-      }
-    }
+    const snap = await firestore
+      .collection("analyses")
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .limit(10)
+      .get();
+    const items = snap.docs.map((d) => {
+      const obj = d.data();
+      return {
+        id: obj.id,
+        createdAt: obj.createdAt,
+        score: obj.result?.score ?? null,
+        role: obj.result?.subscores?.role_detected ?? null
+      };
+    });
     res.json({ items });
   } catch (error) {
     console.error("History ERROR:", error);
